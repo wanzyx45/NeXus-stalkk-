@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b16">
+<title>NEXUS SEARCH</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080b16;color:#eef6ff;font-family:Arial,sans-serif}
+header{padding:18px;border-bottom:1px solid #234054;background:#0b1222;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.brand{font-weight:900;letter-spacing:2px}.brand span{color:#36f4ff}.status{font-size:10px;color:#69ffba}
+main{max-width:850px;margin:auto;padding:28px 14px}.hero{text-align:center;padding:15px 0 25px}
+.tag{color:#36f4ff;font-size:10px;letter-spacing:2px;border:1px solid #24505c;padding:8px 12px;border-radius:20px}
+h1{font-size:clamp(30px,8vw,54px);margin:22px 0 10px;line-height:1.05}h1 span{color:#36f4ff}
+p{color:#9aabc2;font-size:13px;line-height:1.7}
+.card{background:#10182a;border:1px solid #263854;border-radius:15px;padding:18px;margin:14px 0}
+.heading{font-size:11px;letter-spacing:2px;color:#36f4ff;margin-bottom:15px}
+label{font-size:12px;display:block;margin-bottom:8px}
+.row{display:flex;gap:9px}
+input[type=text]{min-width:0;width:100%;padding:14px;border:1px solid #2b405f;border-radius:9px;background:#080f1d;color:#fff;font-size:15px}
+button{border-radius:9px;padding:12px 15px;font-weight:bold;cursor:pointer}
+.primary{background:#36f4ff;color:#06121a;border:0;white-space:nowrap}
+.secondary{background:#0a1323;color:#bdefff;border:1px solid #2b405f;margin:10px 6px 0 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.choice{display:flex;align-items:center;gap:8px;border:1px solid #263854;border-radius:9px;padding:11px;background:#0a1120;font-size:12px;margin:0}
+.choice input{accent-color:#36f4ff}
+#statusMessage{color:#69ffba;font-size:12px;margin-top:12px;overflow-wrap:anywhere}
+.result{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #263854;border-radius:10px;padding:12px;margin:9px 0;background:#0a1120}
+.result small{display:block;color:#9aabc2;margin-top:5px;overflow-wrap:anywhere}
+.result a{color:#36f4ff;border:1px solid #24505c;border-radius:7px;padding:9px;text-decoration:none;font-size:11px;white-space:nowrap}
+.muted{text-align:center;color:#9aabc2;font-size:12px;padding:18px 5px}
+.notice{font-size:11px;color:#c9bdf0;line-height:1.7;border-left:3px solid #a779ff;padding:12px;background:#171129;margin-top:15px}
+footer{text-align:center;padding:20px;color:#72829c;font-size:10px;border-top:1px solid #203047}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.row{flex-direction:column}.primary{padding:14px}.card{padding:14px}header{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand">NEXUS<span>_SEARCH</span></div><div class="status">● SYSTEM READY</div></header>
+<main>
+<section class="hero"><span class="tag">PUBLIC SOCIAL SEARCH TERMINAL</span><h1>NEXUS<br><span>STALKING</span></h1></h2>Powered By @wanzyyyy</h2><p>website ini dapat menemukan pengguna platform sosmed dengan akurat.</p></section>
+<section class="card">
+<div class="heading"> //USERNAME•SEARCH</div>
+<form id="searchForm">
+<label for="username">Masukkan username sosmed (tanpa @)</label>
+<div class="row"><input id="username" type="text" maxlength="100" placeholder="contoh: username123" autocomplete="off" required><button class="primary" type="submit">⌕ CARI</button></div>
+</form><div id="statusMessage" role="status">Sistem aktif,silakan masukkan username anda.</div>
+</section>
+<section class="card"><div class="heading">// PILIH PLATFORM</div><div class="grid" id="platforms">
+<label class="choice"><input type="checkbox" value="instagram" checked> ◎ Instagram</label>
+<label class="choice"><input type="checkbox" value="tiktok" checked> ♪ TikTok</label>
+<label class="choice"><input type="checkbox" value="facebook" checked> f Facebook</label>
+<label class="choice"><input type="checkbox" value="youtube" checked> ▶ YouTube</label>
+<label class="choice"><input type="checkbox" value="x" checked> 𝕏 X / Twitter</label>
+<label class="choice"><input type="checkbox" value="github" checked> ⌘ GitHub</label>
+<label class="choice"><input type="checkbox" value="telegram" checked> ➤ Telegram</label>
+</div><button class="secondary" id="allBtn" type="button">Pilih semua</button><button class="secondary" id="noneBtn" type="button">Kosongkan pilihan</button></section>
+<section class="card"><div class="heading">// HASIL PENCARIAN</div><div id="results" class="muted">Hasil akan muncul di sini setelah kamu menekan CARI.</div></section>
+<section class="card"><div class="heading">//RIWAYAT DI PERANGKAT INI</div><button class="secondary" id="clearBtn" type="button">Hapus riwayat</button><div id="history" class="muted">Belum ada riwayat.</div></section>
+<div class="notice"><b>infor:</b>website ini dapat mencari akun sosmed dengan akurat lengkap dengan followers likes .</div>
+</main>
+<footer>NEXUS_SEARCH · By wanzyxxxxxxx62</footer>
+<script>
+(function(){
+  var platforms={
+    instagram:{name:"Instagram",url:function(u){return "https://www.instagram.com/"+encodeURIComponent(u)+"/";}},
+    tiktok:{name:"TikTok",url:function(u){return "https://www.tiktok.com/@"+encodeURIComponent(u);}},
+    facebook:{name:"Facebook",url:function(u){return "https://www.facebook.com/search/people/?q="+encodeURIComponent(u);}},
+    youtube:{name:"YouTube",url:function(u){return "https://www.youtube.com/results?search_query="+encodeURIComponent(u);}},
+    x:{name:"X / Twitter",url:function(u){return "https://x.com/search?q="+encodeURIComponent(u);}},
+    github:{name:"GitHub",url:function(u){return "https://github.com/"+encodeURIComponent(u);}},
+    telegram:{name:"Telegram",url:function(u){return "https://t.me/"+encodeURIComponent(u);}}
+  };
+  function byId(id){return document.getElementById(id);}
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  var historyItems=[];
+  try{historyItems=JSON.parse(localStorage.getItem("nexus_history_simple")||"[]");if(!Array.isArray(historyItems))historyItems=[];}catch(e){historyItems=[];}
+  function renderHistory(){
+    var el=byId("history");
+    if(!historyItems.length){el.className="muted";el.textContent="Belum ada riwayat.";return;}
+    el.className="";
+    el.innerHTML=historyItems.map(function(item){return '<div class="result"><div><b>'+escapeHtml(item.user)+'</b><small>'+escapeHtml(item.date)+'</small></div><button class="secondary" type="button" data-user="'+escapeHtml(item.user)+'">Ulangi</button></div>';}).join("");
+  }
+  function search(raw){
+    var user=raw.replace(/^@+/,"").trim();
+    if(!user){byId("statusMessage").textContent="Masukkan username terlebih dahulu.";return;}
+    if(/\s/.test(user)){byId("statusMessage").textContent="Username tidak boleh mengandung spasi.";return;}
+    var checks=document.querySelectorAll('#platforms input[type="checkbox"]:checked');
+    if(!checks.length){byId("statusMessage").textContent="Pilih minimal satu platform.";return;}
+    var html="";
+    for(var i=0;i<checks.length;i++){
+      var id=checks[i].value, p=platforms[id];
+      if(!p)continue;
+      html+='<div class="result"><div><b>'+p.name+'</b><small>@'+escapeHtml(user)+'</small></div><a href="'+p.url(user)+'" target="_blank" rel="noopener noreferrer">BUKA ↗</a></div>';
+    }
+    byId("results").className="";
+    byId("results").innerHTML=html;
+    byId("statusMessage").textContent="Berhasil membuat "+checks.length+" tautan pencarian untuk: "+user;
+    historyItems.unshift({user:user,date:new Date().toLocaleString("id-ID")});
+    historyItems=historyItems.slice(0,8);
+    try{localStorage.setItem("nexus_history_simple",JSON.stringify(historyItems));}catch(e){}
+    renderHistory();
+  }
+  byId("searchForm").addEventListener("submit",function(e){e.preventDefault();search(byId("username").value);});
+  byId("allBtn").addEventListener("click",function(){var a=document.querySelectorAll('#platforms input[type="checkbox"]');for(var i=0;i<a.length;i++)a[i].checked=true;byId("statusMessage").textContent="Semua platform dipilih.";});
+  byId("noneBtn").addEventListener("click",function(){var a=document.querySelectorAll('#platforms input[type="checkbox"]');for(var i=0;i<a.length;i++)a[i].checked=false;byId("statusMessage").textContent="Pilihan dikosongkan. Pilih minimal satu platform.";});
+  byId("clearBtn").addEventListener("click",function(){historyItems=[];try{localStorage.removeItem("nexus_history_simple");}catch(e){}renderHistory();byId("statusMessage").textContent="Riwayat di perangkat ini dihapus.";});
+  byId("history").addEventListener("click",function(e){var b=e.target.closest("button[data-user]");if(b){byId("username").value=b.getAttribute("data-user");search(b.getAttribute("data-user"));}});
+  renderHistory();
+})();
+</script>
+</body>
+</html>
